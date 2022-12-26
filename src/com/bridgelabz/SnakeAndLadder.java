@@ -3,12 +3,7 @@ package com.bridgelabz;
 public class SnakeAndLadder {
 
     static final int STARTING_POSITION = 0;
-    static final int WINING_POSITION = 100;
-
-    static final int NO_PLAY = 0;
-    static final int IS_SNAKE = 1;
-    static final int IS_LADDER = 2;
-
+    
     static int toGetDieRollNumber(){
         int randomCheck = (int) (1 + Math.random() * 6);
         return  randomCheck;
