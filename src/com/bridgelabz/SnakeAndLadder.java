@@ -21,44 +21,80 @@ public class SnakeAndLadder {
         return randomCheck1;
     }
 
-    public static void main(String[] args) {
-        System.out.println("Welcome to Snake And Ladder Problems");
+    static int getToss() {
+        int x = (int) (Math.random() * 2);
+        return x;
+    }
 
-        int playerPosition = START_POSITION;
+    static int playGame(int playerPosition) {
+        int roll = toGetDieRollNumber();
+        diceCount++;
+        System.out.println(roll);
 
-        while (playerPosition < FINAL_POSITION) {
-            System.out.println();
-            diceCount++;
-
-            int roll = toGetDieRollNumber();
-            System.out.println(roll);
-
-            int option = toGetOption();
-            switch (option) {
-                case IS_SNAKE:
-                    System.out.println("Snake");
+        int option = toGetOption();
+        switch (option) {
+            case IS_SNAKE:
+                System.out.println("Snake");
+                playerPosition -= roll;
+                if (playerPosition < START_POSITION) {
+                    playerPosition = START_POSITION;
+                    System.out.println("!!!! Player position getting less than " + START_POSITION + " !!!!");
+                }
+                break;
+            case IS_LADDER:
+                System.out.println("Ladder");
+                playerPosition += roll;
+                if (playerPosition > FINAL_POSITION) {
                     playerPosition -= roll;
-                    if (playerPosition < START_POSITION) {
-                        playerPosition = START_POSITION;
-                        System.out.println("!!!! Player position getting less than " + START_POSITION + " !!!!");
-                    }
-                    System.out.println("Player position : " + playerPosition);
-                    break;
-                case IS_LADDER:
-                    System.out.println("Ladder");
-                    playerPosition += roll;
-                    if (playerPosition > FINAL_POSITION) {
-                        playerPosition -= roll;
-                        System.out.println("!!!!Player position getting more than " + FINAL_POSITION + " !!!!");
-                    }
-                    System.out.println("Player position : " + playerPosition);
-                    break;
-                default:
-                    System.out.println("No play");
-                    System.out.println("Player position : " + playerPosition);
+                    System.out.println("!!!!Player position getting more than " + FINAL_POSITION + " !!!!");
+                }
+                break;
+            default:
+                System.out.println("No play");
+
+        }
+
+        System.out.print("Total Dice count : " + diceCount);
+        System.out.println("  , Player position : " + playerPosition);
+
+        if (option == IS_LADDER && playerPosition != FINAL_POSITION) {
+            playGame(playerPosition);
+        }
+        System.out.println();
+        return playerPosition;
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Welcome to Snake ladder program");
+
+        int player1Position = START_POSITION;
+        int player2Position = START_POSITION;
+
+        int toss = getToss();
+
+        while (player1Position < FINAL_POSITION && player2Position < FINAL_POSITION) {
+
+            if (toss == 0) {
+                System.out.println();
+                System.out.println("PLAYER 1 IS ROLLING");
+                player1Position = playGame(player1Position);
+
+                if (player1Position == FINAL_POSITION) {
+                    System.out.println("Player1 is winner");
+                    System.exit(0);
+                }
+                toss = 1;
+            } else {
+                System.out.println();
+                System.out.println("PLAYER 2 IS ROLLING");
+                player2Position = playGame(player2Position);
+                if (player2Position == FINAL_POSITION) {
+                    System.out.println("Player2 is winner");
+                    System.exit(0);
+                    ;
+                }
+                toss = 0;
             }
         }
-        System.out.println("Total Dice count : " + diceCount);
-        System.out.println("Finally Player position : " + playerPosition);
     }
 }
